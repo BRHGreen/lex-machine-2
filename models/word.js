@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
   const Word = sequelize.define('word', {
-    name: DataTypes.STRING,
+    word: DataTypes.STRING,
   });
 
   return Word;
