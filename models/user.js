@@ -5,7 +5,7 @@ export default (sequelize, DataTypes) => {
 
   User.associate = (models) => {
     User.hasMany(models.Word, {
-      foreignKey: 'owener',
+      foreignKey: 'owner',
     });
   };
 

@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 
 const sequelize = new Sequelize(
-  'lex_machine_2_1',
+  'lex_machine_2_3',
   'test_username_1',
   'test_password_1',
   {
