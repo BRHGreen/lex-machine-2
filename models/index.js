@@ -7,8 +7,12 @@ const sequelize = new Sequelize(
   {
     host: 'localhost',
     dialect: 'postgres',
+    define: {
+      underscored: true,
+    },
   },
 );
+
 
 const db = {
   User: sequelize.import('./user'),
@@ -23,6 +27,6 @@ Object.keys(db).forEach((modelName) => {
 
 // needed to run the sequelize.sync in index
 db.sequelize = sequelize;
-// db.Sequelize = Sequelize;
+db.Sequelize = Sequelize;
 
 export default db;

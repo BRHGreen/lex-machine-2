@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import _ from 'lodash'
+import formatErrors from './formatErrors';
+import { tryLogin } from './auth';
 
 export default {
   User: {
@@ -12,22 +12,8 @@ export default {
       }),
   },
   Query: {
+    getUser: (parent, { id }, { models }) => models.User.findOne({ where: { id } }),
     allUsers: (parent, args, { models }) => models.User.findAll(),
-    me: (parent, args, { models, user }) => {
-      // you specify `req.header.authenticaton` in the header in index.js so
-      // that you can check here if they are authenticated or not
-      if (user) {
-        console.log('hit me');
-        // logged in
-        return models.User.findOne({
-          where: {
-            id: user.id,
-          },
-        });
-      }
-      // if not logged in
-      return null;
-    },
     userWords: (parent, { owner }, { models }) =>
       models.Word.findAll({
         where: {
@@ -35,42 +21,40 @@ export default {
         },
       }),
   },
-
   Mutation: {
     updateUser: (parent, { username, newUsername }, { models }) =>
       models.User.update({ username: newUsername }, { where: { username } }),
     deleteUser: (parent, args, { models }) =>
       models.User.destroy({ where: args }),
     createWord: (parent, args, { models }) => models.Word.create(args),
-    register: async (parent, args, { models }) => {
-      const user = args;
-      user.password = await bcrypt.hash(user.password, 12);
-      return models.User.create(user);
-    },
-    login: async (parent, { email, password }, { models, SECRET }) => {
-      const user = await models.User.findOne({ where: { email } });
-      if (!user) {
-        throw new Error('Not user with that email');
-      }
+    login: (parent, { email, password }, { models, SECRET, SECRET2 }) =>
+      tryLogin(email, password, models, SECRET, SECRET2),
+    register: async (parent, { password, ...otherArgs }, { models }) => {
+      try {
+        if (password.length < 5 || password.length > 100) {
+          return {
+            ok: false,
+            errors: [
+              {
+                path: 'password',
+                message: 'The password needs to be between 5 and 100 characters long',
+              },
+            ],
+          };
+        }
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const user = await models.User.create({ ...otherArgs, password: hashedPassword });
 
-      const valid = await bcrypt.compare(password, user.password);
-      if (!valid) {
-        throw new Error('Incorrect password');
+        return {
+          ok: true,
+          user,
+        };
+      } catch (err) {
+        return {
+          ok: false,
+          errors: formatErrors(err, models),
+        };
       }
-
-      // token = '12083098123414aslkjdasldf.asdhfaskjdh12982u793.asdlfjlaskdj10283491'
-      // verify: needs secret | use me for authentication
-      // decode: no secret | use me on the client side
-      const token = jwt.sign(
-        {
-          user: _.pick(user, ['id', 'username']),
-        },
-        SECRET,
-        {
-          expiresIn: '1y',
-        },
-      );
-      return token;
     },
   },
 };
