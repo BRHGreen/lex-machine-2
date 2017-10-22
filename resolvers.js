@@ -17,6 +17,7 @@ export default {
       // you specify `req.header.authenticaton` in the header in index.js so
       // that you can check here if they are authenticated or not
       if (user) {
+        console.log('hit me');
         // logged in
         return models.User.findOne({
           where: {
@@ -49,12 +50,17 @@ export default {
     login: async (parent, { email, password }, { models, SECRET }) => {
       const user = await models.User.findOne({ where: { email } });
       if (!user) {
-        throw new Error('No user with that email');
+        throw new Error('Not user with that email');
       }
+
       const valid = await bcrypt.compare(password, user.password);
       if (!valid) {
-        throw new Error('Incorrect passowrd');
+        throw new Error('Incorrect password');
       }
+
+      // token = '12083098123414aslkjdasldf.asdhfaskjdh12982u793.asdlfjlaskdj10283491'
+      // verify: needs secret | use me for authentication
+      // decode: no secret | use me on the client side
       const token = jwt.sign(
         {
           user: _.pick(user, ['id', 'username']),

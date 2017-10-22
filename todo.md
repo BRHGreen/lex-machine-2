@@ -1,3 +1,6 @@
+
+- Modularise schema and resolvers on the server and use `merge-graphql-schemas` to join them
+
 ##Create relationships:
 
 Users:
