@@ -58,6 +58,11 @@ Within `src/index.js`
 
 You'll have to create/export/import the appropriate mutations in the appropriate places but that's pretty much it for the Frontend
 
+/*
+At this point I tested the register form, the registerResponse is returning `ok` and there are no errors in the console but the users are not being created in the DB and there is nothing in localStorage
+*/
+
+
 
 
 
