@@ -26,20 +26,6 @@ export default {
       models.User.update({ username: newUsername }, { where: { username } }),
     deleteUser: (parent, args, { models }) =>
       models.User.destroy({ where: args }),
-    createWord: async (parent, args, { models, user }) => {
-      try {
-        await models.Word.create({ ...args, owner: user.id });
-        return {
-          ok: true,
-        };
-      } catch (err) {
-        console.log('word err: ', err);
-        return {
-          ok: false,
-          errors: formatErrors(err, models),
-        };
-      }
-    },
     login: (parent, { email, password }, { models, SECRET, SECRET2 }) =>
       tryLogin(email, password, models, SECRET, SECRET2),
     register: async (parent, { password, ...otherArgs }, { models }) => {
