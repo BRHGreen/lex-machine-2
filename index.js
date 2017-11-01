@@ -3,21 +3,24 @@ import bodyParser from 'body-parser';
 import { graphiqlExpress, graphqlExpress } from 'graphql-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import cors from 'cors';
+import path from 'path';
 import jwt from 'jsonwebtoken';
+import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 
-import typeDefs from './schema';
-import resolvers from './resolvers';
 import models from './models';
 
 import { refreshTokens } from './auth';
+
+const SECRET = 'aslkdjlkaj10830912039jlkoaiuwerasdjflkasd';
+const SECRET2 = 'aslkdjlkaj10830912039jlkoaiuwerasdjflkasd';
+
+const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schema')));
+const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers')));
 
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
 });
-
-const SECRET = 'aslkdjlkaj10830912039jlkoaiuwerasdjflkasd';
-const SECRET2 = 'aslkdjlkaj10830912039jlkoaiuwerasdjflkasd';
 
 const app = express();
 

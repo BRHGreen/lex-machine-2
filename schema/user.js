@@ -8,23 +8,11 @@ type User {
   words: [Word!]!
 }
 
-type Word {
-  id: Int!
-  word: String
-  owner: Int!
-}
-
 type Query {
   allUsers: [User!]
   getUser: [User!]!
   userWords(owner: String!): [Word!]!
 }
-
-type Error {
-  path: String!
-  message: String
-}
-
 
 type RegisterResponse {
   ok: Boolean!
@@ -42,8 +30,8 @@ type LoginResponse {
 type Mutation {
   updateUser(username: String!, newUsername: String!): [Int!]!
   deleteUser(username: String!): Int!
-  createWord(owner: Int!, word: String!): Word!
   register(username: String!, email: String!, password: String!): RegisterResponse!
   login(email: String!, password: String!): LoginResponse!
 }
+
 `;
