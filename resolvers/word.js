@@ -1,20 +1,20 @@
 import formatErrors from '../formatErrors';
+import requiresAuth from '../permissions';
 
 export default {
   Mutation: {
-    createWord: async (parent, args, { models, user }) => {
+    createWord: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
         await models.Word.create({ ...args, owner: user.id });
         return {
           ok: true,
         };
       } catch (err) {
-        console.log('word err: ', err);
         return {
           ok: false,
           errors: formatErrors(err, models),
         };
       }
-    },
+    }),
   },
 };
