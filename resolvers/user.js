@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import formatErrors from '../formatErrors';
 import { tryLogin } from '../auth';
+import requiresAuth from '../permissions';
 
 export default {
   User: {
@@ -12,7 +13,7 @@ export default {
       }),
   },
   Query: {
-    getUser: (parent, { id }, { models }) => models.User.findOne({ where: { id } }),
+    getUser: requiresAuth.createResolver((parent, args, { models, user }) => models.User.findOne({ where: { id: user.id } })),
     allUsers: (parent, args, { models }) => models.User.findAll(),
     userWords: (parent, { owner }, { models }) =>
       models.Word.findAll({

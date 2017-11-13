@@ -10,7 +10,7 @@ type User {
 
 type Query {
   allUsers: [User!]
-  getUser(id: Int!): User!
+  getUser: User!
   userWords(owner: String!): [Word!]!
 }
 

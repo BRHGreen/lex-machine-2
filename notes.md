@@ -5,7 +5,7 @@
 - Install the following dependencies on the server: `yarn add bcrypt jsonwebtoken lodash`
 - If using mobx nstall the following dependencies on the client: `yarn add mobx mobx-react`
 
-#Backend
+###Backend
 
 Create an `auth.js`. This should export three functions:
   - `createTokens` - currently only used within the `auth.js` itself, not sure why we're exporting it.
@@ -52,7 +52,7 @@ AT THIS POINT YOU ARE ABLE TO CREATE USERS ON USING THE REGISTER MUTATION IN GRA
 
 ***Think that is it for the backend***
 
-#Frontend
+###Frontend
 Within `src/index.js`
   - put in the React Apollo `networkInterface` middleware and afterware. This will put the JWT tokens in the header so you are able to be varified as an authenticated user when attempting to access authenticated routes.
 
@@ -60,7 +60,26 @@ You'll have to create/export/import the appropriate mutations in the appropriate
 
 /*
 At this point I tested the register form, the registerResponse is returning `ok` and there are no errors in the console but the users are not being created in the DB and there is nothing in localStorage
+***I fixed this. The users were being created but I had created the mutation and resolvers so they saved under `users` in the DB rather than `Users`.
 */
+
+##Creating a query to get the current user
+Using the jwt-decode lib we do a try/catch to get the JWT from localStorage and decode within the render method like so:
+```
+if (loading) {
+  return null;
+}
+try {
+  const token = localStorage.getItem('token');
+  const user = decode(token);
+  console.log('user: ', user);
+} catch (err) {
+  console.log(err);
+}
+```
+
+We then also need to make sure that once we decode the token that we have the correct information available to us within server/auth.js. Within the `_.pick` method we were only returning the 'id'. We now require for 'username' to be added to this array.
+
 
 
 
