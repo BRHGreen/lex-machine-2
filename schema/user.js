@@ -6,6 +6,7 @@ type User {
   createdAt: String!
   updatedAt: String!
   words: [Word!]!
+  profile: Profile
 }
 
 type Query {

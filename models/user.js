@@ -31,6 +31,9 @@ export default (sequelize, DataTypes) => {
     User.hasMany(models.Word, {
       foreignKey: 'owner',
     });
+    User.hasOne(models.Profile, {
+      foreignKey: 'owner',
+    });
   };
 
   return User;
