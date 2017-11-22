@@ -13,6 +13,7 @@ type Query {
   allUsers: [User!]
   getUser: User!
   userWords(owner: String!): [Word!]!
+  userProfile(owner: String!): Profile
 }
 
 type RegisterResponse {

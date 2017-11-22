@@ -11,12 +11,24 @@ export default {
           owner: id,
         },
       }),
+    profile: ({ id }, args, { models }) =>
+      models.Profile.findOne({
+        where: {
+          owner: id,
+        },
+      }),
   },
   Query: {
     getUser: requiresAuth.createResolver((parent, args, { models, user }) => models.User.findOne({ where: { id: user.id } })),
     allUsers: (parent, args, { models }) => models.User.findAll(),
     userWords: (parent, { owner }, { models }) =>
       models.Word.findAll({
+        where: {
+          owner,
+        },
+      }),
+    userProfile: (parent, { owner }, { models }) =>
+      models.Profile.findAll({
         where: {
           owner,
         },
