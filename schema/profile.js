@@ -3,6 +3,7 @@ export default `
 type Profile {
   id: Int!
   age: Int
+  occupation: String
   owner: Int!
 }
 
@@ -12,6 +13,6 @@ type ProfileResponse {
 }
 
 type Mutation {
-  createProfile(age: Int): ProfileResponse!
+  createProfile(age: Int, occupation: String): ProfileResponse!
 }
 `;

@@ -6,6 +6,7 @@ export default {
     createProfile: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
         await models.Profile.create({ ...args, owner: user.id });
+        console.log('args:', args);
         return {
           ok: true,
         };
