@@ -13,5 +13,6 @@ type WordResponse {
 
 type Mutation {
   createWord(word: String!): WordResponse!
+  updateWord(word: String!, newWord: String!): [Int!]!
 }
 `;

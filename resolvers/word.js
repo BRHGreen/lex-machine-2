@@ -3,6 +3,7 @@ import requiresAuth from '../permissions';
 
 export default {
   Mutation: {
+    updateWord: (parent, { word, newWord }, { models }) => models.Word.update({ word: newWord }, { where: { word } }),
     createWord: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
         await models.Word.create({ ...args, owner: user.id });
