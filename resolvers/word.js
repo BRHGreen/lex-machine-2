@@ -2,6 +2,9 @@ import formatErrors from '../formatErrors';
 import requiresAuth from '../permissions';
 
 export default {
+  Query: {
+    getWord: (parent, { id }, { models }) => models.Word.findOne({ where: { id } })
+  },
   Mutation: {
     deleteWord: (parent, args, { models }) =>
       models.Word.destroy({ where: args }),

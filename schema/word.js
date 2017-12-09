@@ -6,6 +6,10 @@ type Word {
   owner: Int!
 }
 
+type Query {
+  getWord(id: Int): Word
+}
+
 type WordResponse {
   ok: Boolean!
   errors: [Error!]
