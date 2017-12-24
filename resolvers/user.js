@@ -19,7 +19,6 @@ export default {
       }),
   },
   Query: {
-    // getWord: (parent, {  })
     getUser: requiresAuth.createResolver((parent, args, { models, user }) => models.User.findOne({ where: { id: user.id } })),
     allUsers: (parent, args, { models }) => models.User.findAll(),
     userWords: (parent, { owner }, { models }) =>
