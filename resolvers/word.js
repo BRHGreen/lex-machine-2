@@ -8,7 +8,7 @@ export default {
   Mutation: {
     deleteWord: (parent, args, { models }) =>
       models.Word.destroy({ where: args }),
-    updateWord: (parent, { word, newWord }, { models }) => models.Word.update({ word: newWord }, { where: { word } }),
+    updateWord: (parent, { id, newWord }, { models }) => models.Word.update({ word: newWord }, { where: { id } }),
     createWord: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
         await models.Word.create({ ...args, owner: user.id });

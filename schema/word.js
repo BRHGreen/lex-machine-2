@@ -19,7 +19,7 @@ type WordResponse {
 
 type Mutation {
   createWord(word: String!, partOfSpeach: String, definition: String ): WordResponse!
-  updateWord(word: String!, newWord: String!): [Int!]!
+  updateWord(id: Int!, newWord: String!): [Int!]!
   deleteWord(word: String!): Int!
 }
 `;
